@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		html,
+		body,
+		div {
+			height: 100%;
+			padding: 0;
+			margin: 0;
+		}
+
+		canvas {
+			margin: auto;
+			display: block;
+			border: 1px solid black;
+		}
+	</style>
+</head>
+
+<body>
+	<div>
+		<canvas id="canvas" width="500px" height="500px"></canvas>
+	</div>
+</body>
+<script>
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext('2d');
+
+	var ball = {
+		x : 50,
+		y : 50,
+		vx : 5,
+		vy : 5,
+		radius : 20,
+		color: 'blue',
+		draw: function(){
+			ctx.beginPath();
+			ctx.arc(this.x, this.y, this.radius, 0, 2*Math.PI);
+			ctx.fillStyle = this.color;
+			ctx.fill();
+		}
+	}
+
+	function draw(){
+		ball.x = ball.x + ball.vx;
+		ball.y = ball.y + ball.vy;
+		ball.vy *= 0.99;
+		ball.vy += 0.25;
+		if ( ball.x>500 || ball.x<0 ) {
+			ball.vx = -ball.vx;
+		}
+		if ( ball.y>500 || ball.y<0 ) {
+			ball.vy = -ball.vy;
+		}
+		ctx.clearRect(0, 0, 500, 500);
+		ball.draw();
+		drawHand = window.requestAnimationFrame(draw);
+	}
+
+	canvas.onmouseover = function(){
+		drawHand = window.requestAnimationFrame(draw);
+	}
+
+	canvas.onmouseout = function(){
+		window.cancelAnimationFrame(drawHand);
+	}
+
+	ball.draw();
+
+</script>
+
+</html>
