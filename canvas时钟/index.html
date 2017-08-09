@@ -78,23 +78,25 @@
 		ctx.clearRect(-canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
 		refreshClock();
 		var time = new Date();
-		var min = time.getMinutes();
-		var hour = time.getHours();
-		var second = time.getSeconds();
-		refreshMinute(ctx, min);
-		refreshHour(ctx, hour);
-		refreshSecond(ctx, second);
+		console.log(time.getMinutes(), time.getHours(), time.getSeconds())
+		var minAngle = 2*Math.PI/60*time.getMinutes() + 2*Math.PI/3600*time.getSeconds();
+		var hourAngle = 2*Math.PI/12*time.getHours() + 2*Math.PI/12/60*time.getMinutes();
+		var secondAngle = 2*Math.PI/60*time.getSeconds();
+		refreshMinute(ctx, minAngle);
+		refreshHour(ctx, hourAngle);
+		refreshSecond(ctx, secondAngle);
 	}, 1000);
 
 	refreshClock();
-	refreshMinute(ctx, new Date().getMinutes());
-	refreshHour(ctx, new Date().getHours());
-	refreshSecond(ctx, new Date().getSeconds());
+	var time = new Date();
+	refreshMinute(ctx, 2*Math.PI/60*time.getMinutes() + 2*Math.PI/3600*time.getSeconds());
+	refreshHour(ctx, 2*Math.PI/12*time.getHours() + 2*Math.PI/12/60*time.getMinutes());
+	refreshSecond(ctx, 2*Math.PI/60*time.getSeconds());
 
-	function refreshMinute (ctx, min){
+	function refreshMinute (ctx, minAngle){
 		ctx.save();
 		ctx.beginPath();
-		ctx.rotate(Math.PI*2*(min/60));
+		ctx.rotate(minAngle);
 		ctx.moveTo(0,0);
 		ctx.lineTo(180, 0);
 		ctx.lineWidth = 10;
@@ -102,10 +104,10 @@
 		ctx.restore();
 	}
 
-	function refreshHour (ctx,hour){
+	function refreshHour (ctx,hourAngle){
 		ctx.save();
 		ctx.beginPath();
-		ctx.rotate(Math.PI*2*(hour/12));
+		ctx.rotate(hourAngle);
 		ctx.moveTo(0,0);
 		ctx.lineTo(140, 0);
 		ctx.lineWidth = 16;
@@ -113,10 +115,10 @@
 		ctx.restore();
 	}
 
-	function refreshSecond (ctx, second){
+	function refreshSecond (ctx, secondAngle){
 		ctx.save();
 		ctx.beginPath();
-		ctx.rotate(Math.PI*2*(second/60));
+		ctx.rotate(secondAngle);
 		ctx.moveTo(0,0);
 		ctx.lineTo(180, 0);
 		ctx.lineWidth = 6;
